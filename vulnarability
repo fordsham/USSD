@@ -1,0 +1,32 @@
+SUMMARY
+
+USSD codes included in a tel URI scheme can be used by an attacker to trick an unsuspecting victim into forwarding inbound calls or modifying voicemail settings.
+
+This method requires just a two-click interaction from the victim and completes instantly. The method has been tested and demonstrated forceful account takeovers within minutes. For certain platforms 2FA will not protect against this type of attack.
+
+The attack can be utilised in conjunction with basic social engineering tactics via email, text, QR code or NFC.
+An additional rather dangerous finding; dialling from a Mac computer on the same iCloud and FaceTime account as an iPhone will remotely send the USSD code as long as the phone is awake. 
+
+This extends the attack vector to Mac computers as-well.
+
+Lastly, iOS interprets alphabetical characters formatted in a tel URI as numerical digits. This offers the attacker a convenient way to obfuscate their actions when exploiting the bug.
+
+Steps to reproduce
+1. User clicks link inside arrows >>>tel:*na*001v00nwakrlf#<<<
+2. User confirms the call popup
+3. USSD code is submitted
+
+Forward all calls unconditionally using 002 MMI.
+
+Forward all calls using 004 USSD when unavailable for example iPhone is off or out of cell reception (avoids status bar icon)
+
+SAMPLE
+Exclude arrows: >>>tel:*na*001v00nwakrlf#<<< Clickable link in email text
+
+Commands vary by carrier, see full list of commands under technical details section of this article: https://en.m.wikipedia.org/wiki/Unstructured_Supplementary_Service_Data
+
+EXPECTED RESULTS
+iOS would disallow USSD codes inside a URI (behaviour on Android OS). Facetime for macOS would have stricter input validation and not forward arbitrary strings.
+
+ACTUAL RESULTS
+USSD codes inside a tel: URI are submitted without user confirmation or authentication. FaceTime on macOS will remotely submit USSD codes found inside a URI without further confirmation or authentication.
